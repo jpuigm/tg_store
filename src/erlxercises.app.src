@@ -1,0 +1,15 @@
+%% -*- mode: erlang -*-
+{application, erlxercises,
+ [
+  {description, "Collection of exercises from different erlang books"},
+  {vsn, "0.0.1"},
+  {registered, []},
+  {applications, [
+                  kernel,
+                  stdlib
+                 ]},
+  %% uncomment if this is an active application
+  %% {mod, { erlxercises_app, []}},
+  {env, []}
+ ]}.
+%% vim: set filetype=erlang tabstop=2

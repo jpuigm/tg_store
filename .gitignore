@@ -1,0 +1,8 @@
+ebin/*
+*.beam
+deps/*
+rel/erlxercises
+.concrete/DEV_MODE
+deps.plt
+.eunit
+*~
