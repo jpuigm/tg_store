@@ -12,14 +12,30 @@
 
 -export([new/0]).
 -export([size/1]).
+-export([add/3]).
+-export([lookup/2]).
 
--spec new() -> {ok, []}.
+-type empty_store() :: [].
+-type store() :: empty_store() | list({atom(), any()}).
+
+-spec new() -> {ok, empty_store()}.
 new() ->
     {ok, []}.
 
--spec size(list()) -> non_neg_integer().
+-spec size(store()) -> non_neg_integer().
 size(Store) ->
     length(Store).
 
+-spec add(atom(), any(), store()) -> {ok, store()}.
+add(Tag, Value, Store) ->
+    {ok, [{Tag, Value} | Store]}.
 
+-spec lookup(atom(), store()) -> {ok, any()} | {error, not_found}.
+lookup(Tag, Store) ->
+    case proplists:get_value(Tag, Store) of
+        undefined ->
+            {error, not_found};
+        Value ->
+            {ok, Value}
+    end.
 
