@@ -1,7 +1,7 @@
 ebin/*
 *.beam
 deps/*
-rel/erlxercises
+rel/tg_store
 .concrete/DEV_MODE
 deps.plt
 .eunit

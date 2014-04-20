@@ -1,15 +1,14 @@
 %% -*- mode: erlang -*-
-{application, erlxercises,
+{application, tg_store,
  [
-  {description, "Collection of exercises from different erlang books"},
+  {description, "Distributed Associative Store"},
   {vsn, "0.0.1"},
   {registered, []},
   {applications, [
                   kernel,
                   stdlib
                  ]},
-  %% uncomment if this is an active application
-  %% {mod, { erlxercises_app, []}},
+  {mod, { tg_store_app, []}},
   {env, []}
  ]}.
 %% vim: set filetype=erlang tabstop=2
