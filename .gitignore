@@ -6,3 +6,4 @@ rel/tg_store
 deps.plt
 .eunit
 *~
+/log/
