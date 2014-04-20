@@ -18,6 +18,8 @@
 -type empty_store() :: [].
 -type store() :: empty_store() | list({atom(), any()}).
 
+-export_type([store/0]).
+
 -spec new() -> {ok, empty_store()}.
 new() ->
     {ok, []}.
