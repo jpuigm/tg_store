@@ -12,7 +12,8 @@ tg_store_test_() ->
      [
       {with, [fun ?MODULE:new_returns_empty_store/1]},
       {with, [fun ?MODULE:add/1]},
-      {with, [fun ?MODULE:lookup/1]}
+      {with, [fun ?MODULE:lookup/1]},
+      {with, [fun ?MODULE:failed_lookup/1]}
      ]}}.
 
 
@@ -42,3 +43,6 @@ lookup(S) ->
     {Tag, Value} = {ship, "Apollo 13"},
     {ok, NewS} = tg_store:add(Tag, Value, S),
     ?assertEqual({ok, Value}, tg_store:lookup(Tag, NewS)).
+
+failed_lookup(S) ->
+    ?assertEqual({error, not_found}, tg_store:lookup(shark, S)).

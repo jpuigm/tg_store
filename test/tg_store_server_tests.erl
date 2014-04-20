@@ -14,7 +14,8 @@ tg_store_test_() ->
      [
       fun ?MODULE:store_is_empty/0,
       fun ?MODULE:add/0,
-      fun ?MODULE:lookup/0
+      fun ?MODULE:lookup/0,
+      fun ?MODULE:failed_lookup/0
      ]}}.
 
 
@@ -46,6 +47,9 @@ lookup() ->
     {Tag, Value} = {ship, "Apollo 13"},
     ok = tg_store_server:add(Tag, Value),
     ?assertEqual({ok, Value}, tg_store_server:lookup(Tag)).
+
+failed_lookup() ->
+    ?assertEqual({error, not_found}, tg_store_server:lookup(trex)).
 
 %% helpers
 
