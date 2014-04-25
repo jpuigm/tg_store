@@ -38,8 +38,19 @@ add(Tag, Value) ->
     gen_server:call(?SERVER, {add, Tag, Value}).
 
 -spec add(atom(), any(), list(node())) -> ok | {timeout, list(node())}.
+add(_Tag, _Value, []) ->
+    ok;
 add(Tag, Value, Nodes) ->
-    add(Tag, Value, Nodes, []).
+    {_Replies, BadNodes} = gen_server:multi_call(Nodes, ?SERVER, {add, Tag, Value}, ?REMOTE_CALL_TIMEOUT),
+    case BadNodes of
+        [] ->
+            lager:log(info, ?MODULE, "Tag ~p successfully stored and replicated", [Tag]),
+            ok;
+        _ ->
+            lager:log(warning, ?MODULE, "Node failed to add values: ~p", [BadNodes]),
+            {timeout, Nodes}
+    end.
+
 
 -spec lookup(atom()) -> {ok, any()} | {error, not_found}.
 lookup(Tag) ->
@@ -88,22 +99,3 @@ code_change(_OldVsn, State, _Extra) ->
 %%%===================================================================
 %%% Internal functions
 %%%===================================================================
-
-%% add gen_server:multi_call/4?
-add(_Tag, _Value, [], []) ->
-    ok;
-add(_Tag, _Value, [], Failed) ->
-    lager:log(info, ?MODULE, "Failed nodes to add values: ~p", [Failed]),
-    {timeout, Failed};
-add(Tag, Value, [Node | Nodes], Failed) when Node =:= node() ->
-    ok = add(Tag, Value),
-    add(Tag, Value, Nodes, Failed);
-add(Tag, Value, [Node | Nodes], Failed) ->
-    case gen_server:call({node, Node}, {add, Tag, Value}, ?REMOTE_CALL_TIMEOUT) of
-        ok ->
-            lager:log(info, ?MODULE, "Successful remote add on node ~p", [Node]),
-            add(Tag, Value, Nodes, Failed);
-        _ ->
-            lager:log(warning, ?MODULE, "Failed remote add on node ~p", [Node]),
-            add(Tag, Value, Nodes, [Node | Failed])
-    end.
