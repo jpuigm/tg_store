@@ -20,11 +20,6 @@ tg_store_test_() ->
 
 
 setup() ->
-    %% Uncomment to debug tests
-    %% dbg:tracer(),
-    %% dbg:p(all, call),
-    %% dbg:tpl(tg_store_server, []),
-    %% dbg:tpl(tg_store_server_tests, []),
     {ok, Server} = tg_store_server:start_link(),
     Server.
 

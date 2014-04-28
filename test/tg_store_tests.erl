@@ -18,18 +18,13 @@ tg_store_test_() ->
 
 
 setup() ->
-    %% Uncomment to debug tests
-    %% dbg:tracer(),
-    %% dbg:p(all, call),
-    %% dbg:tpl(tg_store, []),
-    %% dbg:tpl(tg_store_test, []),
     {ok, Store} = tg_store:new(),
     Store.
 
 teardown(_Store) ->
     ok.
 
-%%
+%% tests
 
 new_returns_empty_store(S) ->
     ?assertEqual(0, tg_store:size(S)).
