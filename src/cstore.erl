@@ -13,6 +13,7 @@
 %% API
 -export([start_link/0]).
 -export([new/1,new/2]).
+-export([add/2]).
 
 %% gen_server callbacks
 -export([init/1, handle_call/3, handle_cast/2, handle_info/2,
@@ -32,6 +33,9 @@ new(Nodename) ->
 new(Host, Nodename) ->
     gen_server:call(?SERVER, {new, Host, Nodename}).
 
+add(Tag, Value) ->
+    gen_server:call(?SERVER, {add, Tag, Value}).
+
 start_link() ->
     gen_server:start_link({local, ?SERVER}, ?MODULE, [], []).
 
@@ -45,6 +49,9 @@ init([]) ->
 handle_call({new, Host, Nodename}, _From, State) ->
     Reply = {ok, Node} = slave:start(Host, Nodename),
     NewState = State#state{nodes = [Node | State#state.nodes]},
+    {reply, Reply, NewState};
+handle_call({add, Tag, Value}, _From, State) ->
+    Reply = tg_store_server:add(Tag, Value, State#state.nodes),
     {reply, Reply, NewState}.
 
 handle_cast(_Msg, State) ->
