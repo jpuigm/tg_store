@@ -120,3 +120,5 @@ Eshell V5.10.4  (abort with ^G)
 {ok,pepito@jobs}
 (<0.38.0>) returned from slave:start/2 -> {ok,pepito@jobs}
 ```
+
+The release itself sets a 'tg_store' cookie, which needs to be added to the slave parameters. However, that still doesn't open the port propertly. Code tracing is necessary down to erlang BIFs.
